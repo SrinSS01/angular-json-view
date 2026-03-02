@@ -1,64 +1,125 @@
-# NgJsonView
+# angular-json-view
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.0.
+A read-only Angular 21 JSON tree viewer component. Supports objects, arrays, and primitive types with expandable/collapsible nodes, theming via CSS variables, and copy-to-clipboard.
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Installation
 
 ```bash
-ng generate component component-name
+npm install ng-json-view
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Usage
 
-```bash
-ng generate --help
+Import `NgJsonViewComponent` into your standalone component:
+
+```ts
+import { NgJsonViewComponent } from 'ng-json-view';
+
+@Component({
+  standalone: true,
+  imports: [NgJsonViewComponent],
+  template: `<ng-json-view [src]="data" />`,
+})
+export class AppComponent {
+  data = {
+    name: 'Angular JSON View',
+    version: 21,
+    features: ['expandable', 'collapsible', 'themeable'],
+    active: true,
+    meta: null,
+  };
+}
 ```
 
-## Building
+## Inputs
 
-To build the library, run:
+| Input | Type | Default | Description |
+|-------|------|---------|-------------|
+| `src` | `JsonValue` | *(required)* | The JSON value to display |
+| `name` | `string \| false` | `'root'` | Root node label. Set to `false` to hide. |
+| `collapsed` | `boolean \| number` | `false` | `true` collapses all nodes. A number collapses nodes at or beyond that depth (e.g. `1` collapses children of the root). |
+| `sortKeys` | `boolean` | `false` | Sort object keys alphabetically |
+| `indentWidth` | `number` | `4` | Indentation width in character units |
+| `enableClipboard` | `boolean` | `true` | Show copy-to-clipboard buttons on hover |
+| `theme` | `JsonTheme \| null` | `null` | Override CSS variable-based theme |
+
+## Theming
+
+The component uses CSS custom properties (variables) for theming. You can override them via the `theme` input or with global CSS:
+
+```ts
+// Via input
+<ng-json-view [src]="data" [theme]="{
+  background: '#ffffff',
+  keyColor: '#0451a5',
+  stringColor: '#a31515',
+  numberColor: '#098658',
+  booleanColor: '#0000ff',
+  nullColor: '#808080',
+}" />
+```
+
+```css
+/* Via global CSS */
+ng-json-view {
+  --njv-background: #ffffff;
+  --njv-key-color: #0451a5;
+  --njv-string-color: #a31515;
+  --njv-number-color: #098658;
+  --njv-boolean-color: #0000ff;
+  --njv-null-color: #808080;
+  --njv-font-family: 'Consolas', monospace;
+  --njv-font-size: 13px;
+  --njv-punctuation-color: #333333;
+  --njv-meta-color: #999999;
+  --njv-indent-color: #dddddd;
+  --njv-toggle-color: #555555;
+}
+```
+
+## Examples
+
+### Collapsed by default
+
+```html
+<ng-json-view [src]="data" [collapsed]="true" />
+```
+
+### Expand top level only (collapse children at depth ≥ 1)
+
+```html
+<ng-json-view [src]="data" [collapsed]="1" />
+```
+
+### No root label
+
+```html
+<ng-json-view [src]="data" [name]="false" />
+```
+
+### Custom root name, sorted keys, no clipboard
+
+```html
+<ng-json-view
+  [src]="data"
+  name="response"
+  [sortKeys]="true"
+  [enableClipboard]="false"
+/>
+```
+
+## Types
+
+```ts
+import type { JsonValue, JsonObject, JsonArray, JsonTheme, JsonNodeType, JsonPath } from 'ng-json-view';
+```
+
+## Development
 
 ```bash
+# Build the library
 ng build ng-json-view
+
+# Run tests
+ng test ng-json-view
 ```
-
-This command will compile your project, and the build artifacts will be placed in the `dist/` directory.
-
-### Publishing the Library
-
-Once the project is built, you can publish your library by following these steps:
-
-1. Navigate to the `dist` directory:
-
-   ```bash
-   cd dist/ng-json-view
-   ```
-
-2. Run the `npm publish` command to publish your library to the npm registry:
-   ```bash
-   npm publish
-   ```
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
