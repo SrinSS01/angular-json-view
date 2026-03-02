@@ -1,0 +1,34 @@
+<div class="demo-container">
+  <h1>ng-json-view Demo</h1>
+  <p>A read-only Angular JSON tree viewer component.</p>
+
+  <section>
+    <h2>Default (Dark Theme)</h2>
+    <ng-json-view [src]="sampleData" />
+  </section>
+
+  <section>
+    <h2>Light Theme</h2>
+    <ng-json-view [src]="sampleData" [theme]="lightTheme" />
+  </section>
+
+  <section>
+    <h2>Collapsed by Default</h2>
+    <ng-json-view [src]="sampleData" [collapsed]="true" />
+  </section>
+
+  <section>
+    <h2>Expand Top Level Only (collapsed=1)</h2>
+    <ng-json-view [src]="sampleData" [collapsed]="1" />
+  </section>
+
+  <section>
+    <h2>Sorted Keys, No Clipboard</h2>
+    <ng-json-view [src]="sampleData" [sortKeys]="true" [enableClipboard]="false" name="response" />
+  </section>
+
+  <section>
+    <h2>No Root Label</h2>
+    <ng-json-view [src]="sampleData" [name]="false" />
+  </section>
+</div>
